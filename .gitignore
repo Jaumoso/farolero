@@ -1,0 +1,4 @@
+.venv/
+config.yaml
+stacks/
+__pycache__

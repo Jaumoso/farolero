@@ -1,0 +1,120 @@
+<div id="stacks-table">
+  {% if message %}
+  <div
+    class="mb-4 p-3 rounded bg-green-100 text-green-800 border border-green-300"
+  >
+    {{ message }}
+  </div>
+  {% endif %}
+  <div class="overflow-x-auto">
+    <table
+      class="min-w-full bg-white rounded-xl shadow-lg mb-8 border border-gray-200"
+    >
+      <thead>
+        <tr
+          class="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 text-left"
+        >
+          <th class="p-4 font-bold">Stack</th>
+          <th class="p-4 font-bold">Ruta del stack</th>
+          <th class="p-4 font-bold">Proyecto</th>
+          <th class="p-4 font-bold">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for name, data in stacks.items() %}
+        <tr class="border-b hover:bg-blue-50 transition-all">
+          <td class="p-4 font-semibold text-lg">{{ name }}</td>
+          <td class="p-4 text-sm text-gray-700 font-mono">{{ data.path }}</td>
+          <td class="p-4 text-sm text-gray-700 font-mono">
+            {{ data.project }}
+          </td>
+          <td class="p-4 flex gap-2">
+            <form
+              hx-post="/wake/{{ name }}"
+              hx-target="#stacks-table"
+              hx-swap="outerHTML"
+            >
+              <button
+                class="px-4 py-1 bg-green-500 hover:bg-green-600 text-white rounded shadow transition-all"
+              >
+                🚀 Despertar
+              </button>
+            </form>
+            <form
+              hx-post="/delete/{{ name }}"
+              hx-target="#stacks-table"
+              hx-swap="outerHTML"
+            >
+              <button
+                class="px-4 py-1 bg-red-500 hover:bg-red-600 text-white rounded shadow transition-all"
+              >
+                🗑️ Eliminar
+              </button>
+            </form>
+            <form
+              hx-post="/edit/{{ name }}"
+              hx-target="#stacks-table"
+              hx-swap="outerHTML"
+            >
+              <button
+                class="px-4 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded shadow transition-all"
+                onclick="document.getElementById('edit-stack-modal').classList.remove('hidden')"
+              >
+                ✏️ Editar
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div
+  id="edit-stack-modal"
+  class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+>
+  <div
+    class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 max-w-lg w-full"
+  >
+    <h2 class="text-xl font-bold mb-4 text-blue-800">✏️ Editar stack</h2>
+    <form
+      hx-post="/edit/{{ name }}"
+      hx-target="#stacks-table"
+      hx-swap="outerHTML"
+    >
+      <div class="flex flex-col gap-4 mb-4">
+        <input
+          type="text"
+          name="path"
+          placeholder="Nueva ruta al directorio del stack"
+          class="border border-blue-200 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+          required
+        />
+        <input
+          type="text"
+          name="project"
+          placeholder="Nuevo nombre del proyecto Docker Compose"
+          class="border border-blue-200 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+          required
+        />
+      </div>
+      <div class="flex justify-end gap-4">
+        <button
+          type="button"
+          class="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded shadow transition-all"
+          onclick="document.getElementById('edit-stack-modal').classList.add('hidden')"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow transition-all"
+        >
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+services:
+  farolero:
+    build:
+      context: .
+    container_name: farolero
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      # Linux Docker socket
+      # - /var/run/docker.sock:/var/run/docker.sock
+      # MacOS Docker socket
+      - /Users/jaumec/.docker/run/docker.sock:/var/run/docker.sock
+      - ./app/config.yaml:/app/config.yaml:ro
+      # Path to stacks definitions
+      - ./stacks:/stacks:ro

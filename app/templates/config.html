@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block content %}
+<div id="stacks-table" hx-get="/" hx-trigger="load">
+  {% include "partials/stacks_table.html" %}
+</div>
+
+<form
+  hx-post="/add"
+  hx-target="#stacks-table"
+  hx-swap="outerHTML"
+  class="bg-white p-6 rounded-xl shadow-lg mt-6 border border-gray-200 max-w-2xl mx-auto"
+>
+  <h2 class="text-xl font-bold mb-4 text-blue-800">➕ Añadir nuevo stack</h2>
+  <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <input
+      type="text"
+      name="name"
+      placeholder="Nombre del stack (ej: navidrome)"
+      class="border border-blue-200 p-3 flex-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+      required
+    />
+    <input
+      type="text"
+      name="path"
+      placeholder="Ruta al directorio del stack (ej: ./stacks/navidrome)"
+      class="border border-blue-200 p-3 flex-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+      required
+    />
+    <input
+      type="text"
+      name="project"
+      placeholder="Nombre del proyecto Docker Compose (ej: navidrome)"
+      class="border border-blue-200 p-3 flex-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+      required
+    />
+    <button
+      class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow transition-all"
+      type="submit"
+    >
+      Guardar
+    </button>
+  </div>
+</form>
+{% endblock %}
